@@ -1,0 +1,77 @@
+﻿@page "/"
+@using MudBlazor
+<PageTitle>Dashboard</PageTitle>
+
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px; display:flex; justify-content:center; align-items:center; flex-direction:column">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsCar" Size="Size.Large"/>
+                <MudText Typo="Typo.h5">No of Cars</MudText><br/>
+                <MudText Typo="Typo.h3">4</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;  display:flex; justify-content:center; align-items:center; flex-direction:column">
+                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large"/>
+                <MudText Typo="Typo.h5">No of Drivers</MudText><br />
+                <MudText Typo="Typo.h3">5</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;  display:flex; justify-content:center; align-items:center; flex-direction:column">
+                <MudIcon Icon="@Icons.Material.Filled.Newspaper" Size="Size.Large"/>
+                <MudText Typo="Typo.h5">No of Orders</MudText><br />
+                <MudText Typo="Typo.h3">5</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" lg="8">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 100%">
+                <div>
+                    <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" @bind-SelectedIndex="index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" lg="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 100%">
+                <MudChart ChartType="ChartType.Donut" LegendPosition="Position.Bottom" Width="300px" Height="300px"
+                          InputData="@data" InputLabels="@labels">
+                </MudChart>
+            </MudPaper>
+        </MudItem>
+       @*  <MudItem xs="12" sm="6">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudItem> *@
+       
+       @*  <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        </MudItem> *@
+    </MudGrid>
+</MudContainer>
+
+ @code {
+    public double[] data = { 25, 77, 28, 5 };
+    public string[] labels = { "Oil", "Coal", "Gas", "Biomass" };
+    private int index = -1; //default value cannot be 0 -> first selectedindex is 0.
+
+    public List<ChartSeries> Series = new List<ChartSeries>()
+    {
+        new ChartSeries() { Name = "United States", Data = new double[] { 40, 20, 25, 27, 46, 60, 48, 80, 15 } },
+        new ChartSeries() { Name = "Germany", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 31 } },
+        new ChartSeries() { Name = "Sweden", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 18 } },
+    };
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+}
