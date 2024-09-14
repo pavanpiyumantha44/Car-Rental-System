@@ -1,6 +1,70 @@
 ﻿@page "/drivers"
-<h3>Drivers</h3>
+@using CRS.Models
+@using CRS.Services
+@using MudBlazor
+@using System.Net.Http.Json
+@using static MudBlazor.CategoryTypes
+@inject DriverServices driverServices
+@inject NavigationManager NavigationManager
 
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+    <MudPaper Elevation="0" Class="mt-4 mb-4">
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="margin-left:-16px"><b>Drivers</b></MudText>
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Outlined.Add" OnClick="AddButtonClick" />
+        </MudToolBar>
+    </MudPaper>
+    <MudPaper Outlined="true" Rounded="true" Border="true" ApplyEffectsToContainer="true" Class="mt-4 mb-4">
+        <MudDataGrid T="Driver" Items="@driverList" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+            <ToolBarContent>
+                <MudSpacer />
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <TemplateColumn Title="ID" Filterable="false" Sortable="false">
+                    <CellTemplate>
+                        <MudText Style="height:0px; color:black;" Class="mud-button-root mud-icon-button" @onclick="@(()=>PositionCellClicked(context.Item.Id))">@context.Item.Id</MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                <PropertyColumn Property="x => x.Name"/>
+                <PropertyColumn Property="x => x.NIC"/>
+                <PropertyColumn Property="x => x.Address"/>
+                <PropertyColumn Property="x => x.Email"/>
+                <PropertyColumn Property="x => x.Phone"/>
+            </Columns>
+        </MudDataGrid>
+    </MudPaper>
+</MudContainer>
 @code {
+    private List<Driver> driverList;
+    private string _searchString;
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        driverList = await driverServices.GetAllDriversAsync();
+    }
+
+    private void AddButtonClick()
+    {
+        DialogOptions options = new DialogOptions();
+        //Dialog.Show<DlgSelectKnoledgeItem>("New Knowledge Item", options);
+    }
+
+    void PositionCellClicked(int id)
+    {
+        NavigationManager.NavigateTo($"/knowledgeBase/{id}");
+    }
+    private Func<Driver, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if ($"{x.Name} {x.Id}".Contains(_searchString))
+            return true;
+
+        return false;
+    };
 }
